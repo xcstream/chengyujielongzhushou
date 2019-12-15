@@ -8,6 +8,9 @@
     <title>成语接龙助手</title>
     <style>
     
+        [v-cloak]{
+            display: none;
+        }
         .active {
             cursor: hand;margin:2px;min-width: 100px;display: inline-block; padding:4px;border:lightblue 1px dashed;border-radius: 6px;
         }
@@ -20,7 +23,8 @@
     </style>
 </head>
 <body>
-    <div id='app' style='width:80vw;text-align: center;margin-left:10vw;'>
+    <div id='load'>加载中...</div>
+    <div id='app' style='width:80vw;text-align: center;margin-left:10vw;' v-cloak>
         <div>
             输入第一个字或者字的拼音
             <el-input v-model='s'style="width:100px">
@@ -64,6 +68,11 @@ var app =new Vue({
         s:function(v){
             app.result = dict[v] || []
         },    
+    },
+    mounted:function(){
+        setTimeout(function(){
+            document.getElementById('load').remove()
+        },100)
     },
     methods:{
 
