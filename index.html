@@ -6,6 +6,18 @@
     <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <title>成语接龙助手</title>
+    <style>
+    
+        .active {
+            cursor: hand;margin:2px;min-width: 100px;display: inline-block; padding:4px;border:lightblue 1px dashed;border-radius: 6px;
+        }
+
+        .inactive {
+            cursor: hand;margin:2px;min-width: 100px;display: inline-block; padding:4px;border:red 1px dashed;border-radius: 6px;
+        }
+   
+
+    </style>
 </head>
 <body>
     <div id='app' style='width:80vw;text-align: center;margin-left:10vw;'>
@@ -16,10 +28,24 @@
         </div>
         <div>
             <el-card style='min-height: 300px;'>
-                <div style='margin:2px;min-width: 100px;display: inline-block; padding:4px;border:lightblue 1px dashed;border-radius: 6px;' v-for='v in result'>
+                <div  v-for='v in result' @click='next(v)'
+                    :class = '{"active": hasnext(v) , "inactive": !hasnext(v)  }'
+                >
                     {{v}}
                 </div>
-            </el-card>
+            </el-card>            
+        </div>
+        <div>
+            
+            <el-card style='min-height: 300px;'>
+               <div>
+                点击历史
+               </div> 
+                <div :class = '{"active": hasnext(v) , "inactive": !hasnext(v)  }' v-for='v in history' @click='next(v,1)'>
+                    {{v}}
+                </div>
+            </div>>
+            </el-card>  
         </div>
     </div>
 </body>
@@ -31,13 +57,27 @@ var app =new Vue({
     el:'#app',
     data:{
         s:'',
-        result:[]
+        result:[],
+        history:[]
     },
     watch:{
         s:function(v){
             app.result = dict[v] || []
+        },    
+    },
+    methods:{
+
+        hasnext:function(v){
+            return dict[v[v.length-1]]
+        },
+        next:function(v,his){
+            app.s=v[v.length-1]
+            if(!his){
+                app.history.push(v)
+            }
         }
     }
+    
   })
 
 </script>
